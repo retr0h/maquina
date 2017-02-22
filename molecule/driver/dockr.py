@@ -61,3 +61,6 @@ class Dockr(base.Base):
 
     def connection_options(self, instance_name):
         return {'ansible_connection': 'docker'}
+
+    def ssh_options(self, instance_name):
+        return {}

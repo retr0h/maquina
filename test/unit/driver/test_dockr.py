@@ -75,6 +75,10 @@ def test_connection_options(docker_instance):
     assert x == docker_instance.connection_options('foo')
 
 
+def test_ssh_options(docker_instance):
+    assert {} == docker_instance.ssh_options('foo')
+
+
 def test_instance_config_property(docker_instance):
     x = os.path.join(docker_instance._config.ephemeral_directory,
                      'instance_config.yml')

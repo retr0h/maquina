@@ -146,6 +146,17 @@ def test_connection_options_handles_missing_results_key(mocker,
     assert {} == vagrant_instance.connection_options('foo')
 
 
+def test_ssh_options(vagrant_instance):
+    x = {
+        'ansible_ssh_extra_args': ('-o UserKnownHostsFile=/dev/null '
+                                   '-o ControlMaster=auto '
+                                   '-o ControlPersist=60s '
+                                   '-o IdentitiesOnly=yes')
+    }
+
+    assert x == vagrant_instance.ssh_options('foo')
+
+
 def test_vagrantfile_property(vagrant_instance):
     x = os.path.join(vagrant_instance._config.ephemeral_directory,
                      'Vagrantfile')

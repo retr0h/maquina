@@ -75,6 +75,10 @@ def test_connection_options(lxd_instance):
     assert x == lxd_instance.connection_options('foo')
 
 
+def test_ssh_options(lxd_instance):
+    assert {} == lxd_instance.ssh_options('foo')
+
+
 def test_instance_config_property(lxd_instance):
     x = os.path.join(lxd_instance._config.ephemeral_directory,
                      'instance_config.yml')

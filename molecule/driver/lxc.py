@@ -61,3 +61,6 @@ class Lxc(base.Base):
 
     def connection_options(self, instance_name):
         return {'ansible_connection': 'lxc'}
+
+    def ssh_options(self, instance_name):
+        return {}

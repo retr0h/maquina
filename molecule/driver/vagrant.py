@@ -112,6 +112,16 @@ class Vagrant(base.Base):
             # instance_config is not on disk.
             return {}
 
+    def ssh_options(self, instance_name):
+        options = [
+            '-o UserKnownHostsFile=/dev/null',
+            '-o ControlMaster=auto',
+            '-o ControlPersist=60s',
+            '-o IdentitiesOnly=yes',
+        ]
+
+        return {'ansible_ssh_extra_args': ' '.join(options)}
+
     @property
     def vagrantfile(self):
         return os.path.join(self._config.ephemeral_directory, 'Vagrantfile')

@@ -209,7 +209,10 @@ class Ansible(object):
                 instance_name = platform['name']
                 connection_options = self._config.driver.connection_options(
                     instance_name)
-                dd[group]['hosts'][instance_name] = connection_options
+                ssh_options = self._config.driver.ssh_options(
+                    instance_name)
+                instance_options = self._config.merge_dicts(connection_options, ssh_options)
+                dd[group]['hosts'][instance_name] = instance_options
                 dd['ungrouped']['vars'] = {
                     'molecule_file': self._config.molecule_file,
                     'molecule_inventory_file': self.inventory_file,

@@ -57,3 +57,6 @@ class Lxd(base.Base):
 
     def connection_options(self, instance_name):
         return {'ansible_connection': 'lxd'}
+
+    def ssh_options(self, instance_name):
+        return {}

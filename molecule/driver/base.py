@@ -104,6 +104,16 @@ class Base(object):
         """
         pass
 
+    @abc.abstractmethod
+    def ssh_options(self, instance_name):  # pragma: no cover
+        """
+        SSH options supplied to inventory and returns a dict.
+
+        :param instance_name: A string containing the instance to login to.
+        :returns: dict
+        """
+        pass
+
     @property
     def options(self):
         return self._config.config['driver']['options']
