@@ -40,12 +40,9 @@ def test_get_ansible_playbook(namespace_instance):
     assert x == namespace_instance._config.provisioner.playbooks.setup
 
 
-#  @pytest.fixture
-#  def molecule_provisioner_section_data_override():
-
-
-def test_get_ansible_playbook_with_driver_key(namespace_instance):
-    d = {
+@pytest.fixture
+def molecule_provisioner_driver_section_data():
+    return {
         'provisioner': {
             'name': 'ansible',
             'playbooks': {
@@ -56,16 +53,22 @@ def test_get_ansible_playbook_with_driver_key(namespace_instance):
             },
         }
     }
-    namespace_instance._config.merge_dicts(namespace_instance._config.config,
-                                           d)
+
+
+def test_get_ansible_playbook_with_driver_key(
+        molecule_provisioner_driver_section_data, namespace_instance):
+    namespace_instance._config.merge_dicts(
+        namespace_instance._config.config,
+        molecule_provisioner_driver_section_data)
 
     x = os.path.join(namespace_instance._config.scenario.directory,
                      'docker-create.yml')
     assert x == namespace_instance._config.provisioner.playbooks.setup
 
 
-def test_get_ansible_playbook_when_playbook_none(namespace_instance):
-    d = {
+@pytest.fixture
+def molecule_provisioner_playbook_none_section_data():
+    return {
         'provisioner': {
             'name': 'ansible',
             'playbooks': {
@@ -73,15 +76,20 @@ def test_get_ansible_playbook_when_playbook_none(namespace_instance):
             },
         }
     }
-    namespace_instance._config.merge_dicts(namespace_instance._config.config,
-                                           d)
+
+
+def test_get_ansible_playbook_when_playbook_none(
+        molecule_provisioner_playbook_none_section_data, namespace_instance):
+    namespace_instance._config.merge_dicts(
+        namespace_instance._config.config,
+        molecule_provisioner_playbook_none_section_data)
 
     assert namespace_instance._config.provisioner.playbooks.destruct is None
 
 
-def test_get_ansible_playbook_with_driver_key_when_playbook_none(
-        namespace_instance):
-    d = {
+@pytest.fixture
+def molecule_provisioner_driver_playbook_none_section_data():
+    return {
         'provisioner': {
             'name': 'ansible',
             'playbooks': {
@@ -92,15 +100,21 @@ def test_get_ansible_playbook_with_driver_key_when_playbook_none(
             },
         }
     }
-    namespace_instance._config.merge_dicts(namespace_instance._config.config,
-                                           d)
+
+
+def test_get_ansible_playbook_with_driver_key_when_playbook_none(
+        molecule_provisioner_driver_playbook_none_section_data,
+        namespace_instance):
+    namespace_instance._config.merge_dicts(
+        namespace_instance._config.config,
+        molecule_provisioner_driver_playbook_none_section_data)
 
     assert namespace_instance._config.provisioner.playbooks.destruct is None
 
 
-def test_get_ansible_playbook_with_driver_key_when_playbook_key_missing(
-        namespace_instance):
-    d = {
+@pytest.fixture
+def molecule_provisioner_driver_playbook_key_missing_section_data():
+    return {
         'provisioner': {
             'name': 'ansible',
             'playbooks': {
@@ -111,8 +125,14 @@ def test_get_ansible_playbook_with_driver_key_when_playbook_key_missing(
             },
         }
     }
-    namespace_instance._config.merge_dicts(namespace_instance._config.config,
-                                           d)
+
+
+def test_get_ansible_playbook_with_driver_key_when_playbook_key_missing(
+        molecule_provisioner_driver_playbook_key_missing_section_data,
+        namespace_instance):
+    namespace_instance._config.merge_dicts(
+        namespace_instance._config.config,
+        molecule_provisioner_driver_playbook_key_missing_section_data)
 
     assert namespace_instance._config.provisioner.playbooks.destruct is None
 
@@ -595,32 +615,28 @@ def test_write_config(temp_dir, ansible_instance):
     assert os.path.isfile(ansible_instance.config_file)
 
 
-def test_manage_inventory(ansible_instance,
-                          patched_provisioner_write_inventory,
-                          patched_provisioner_remove_vars,
-                          patched_provisioner_add_or_update_vars,
-                          patched_provisioner_link_or_update_vars):
+def test_manage_inventory(ansible_instance, patched_write_inventory,
+                          patched_remove_vars, patched_add_or_update_vars,
+                          patched_link_or_update_vars):
     ansible_instance.manage_inventory()
 
-    patched_provisioner_write_inventory.assert_called_once_with()
-    patched_provisioner_remove_vars.assert_called_once_with()
-    patched_provisioner_add_or_update_vars.assert_called_once_with()
-    assert not patched_provisioner_link_or_update_vars.called
+    patched_write_inventory.assert_called_once_with()
+    patched_remove_vars.assert_called_once_with()
+    patched_add_or_update_vars.assert_called_once_with()
+    assert not patched_link_or_update_vars.called
 
 
-def test_manage_inventory_with_links(ansible_instance,
-                                     patched_provisioner_write_inventory,
-                                     patched_provisioner_remove_vars,
-                                     patched_provisioner_add_or_update_vars,
-                                     patched_provisioner_link_or_update_vars):
+def test_manage_inventory_with_links(
+        ansible_instance, patched_write_inventory, patched_remove_vars,
+        patched_add_or_update_vars, patched_link_or_update_vars):
     c = ansible_instance._config.config
     c['provisioner']['inventory']['links'] = {'foo': 'bar'}
     ansible_instance.manage_inventory()
 
-    patched_provisioner_write_inventory.assert_called_once_with()
-    patched_provisioner_remove_vars.assert_called_once_with()
-    assert not patched_provisioner_add_or_update_vars.called
-    patched_provisioner_link_or_update_vars.assert_called_once_with()
+    patched_write_inventory.assert_called_once_with()
+    patched_remove_vars.assert_called_once_with()
+    assert not patched_add_or_update_vars.called
+    patched_link_or_update_vars.assert_called_once_with()
 
 
 def test_add_or_update_vars(ansible_instance):
