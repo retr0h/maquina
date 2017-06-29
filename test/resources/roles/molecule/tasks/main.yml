@@ -1,6 +1,5 @@
 ---
-- name: Create /etc/molecule
-  file: dest=/etc/molecule
+- file: dest=/etc/molecule
         group=root
         owner=root
         mode=0755

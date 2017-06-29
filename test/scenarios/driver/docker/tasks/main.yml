@@ -1,0 +1,7 @@
+---
+- name: This should pass
+  command: /bin/true
+  # tags:
+  #   # Skip ANSIBLE0012] Commands should not change things if nothing needs doing
+  #   # Need to know if firewalld is active.
+  #   skip_ansible_lint
