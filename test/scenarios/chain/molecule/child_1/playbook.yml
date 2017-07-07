@@ -1,0 +1,19 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Create /etc/molecule
+      file:
+        dest: /etc/molecule
+        group: root
+        owner: root
+        mode: 0755
+        state: directory
+
+    - name: Create /etc/molecule/child_1
+      copy:
+        dest: /etc/molecule/child_1
+        group: root
+        owner: root
+        mode: 0644
+        content: child_1
