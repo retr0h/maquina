@@ -21,8 +21,8 @@
 from molecule.command import lint
 
 
-def test_execute(mocker, patched_logger_info, patched_yamllint, patched_flake8,
-                 patched_ansible_lint, config_instance):
+def test_execute(patched_yamllint, patched_flake8, patched_ansible_lint,
+                 config_instance):
     l = lint.Lint(config_instance)
     l.execute()
 

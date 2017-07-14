@@ -20,6 +20,7 @@
 
 import click
 
+import molecule.command
 from molecule import logger
 from molecule import scenarios
 from molecule.command import base
@@ -52,11 +53,14 @@ class Destruct(base.Base):
 
         :return: None
         """
+<<<<<<< HEAD
         if not self._config.provisioner.playbooks.destruct:
             msg = 'Skipping, destruct playbook not configured.'
             LOG.warn(msg)
             return
 
+=======
+>>>>>>> Implement an internal test matrix
         self._config.provisioner.destruct()
 
 
@@ -76,6 +80,10 @@ def destruct(ctx, scenario_name):  # pragma: no cover
 
     s = scenarios.Scenarios(
         base.get_configs(args, command_args), scenario_name)
+    s.print_matrix()
     for scenario in s.all:
-        s.print_sequence_info(scenario, scenario.subcommand)
-        Destruct(scenario.config).execute()
+        for sequence in s.sequences_for_scenario(scenario):
+            s.print_sequence_info(scenario, sequence)
+            command_module = getattr(molecule.command, sequence)
+            command = getattr(command_module, sequence.capitalize())
+            command(scenario.config).execute()

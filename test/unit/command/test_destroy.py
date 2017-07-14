@@ -21,8 +21,8 @@
 from molecule.command import destroy
 
 
-def test_execute(mocker, patched_destroy_prune, patched_logger_info,
-                 patched_ansible_destroy, config_instance):
+def test_execute(patched_destroy_prune, patched_ansible_destroy,
+                 config_instance):
     d = destroy.Destroy(config_instance)
     d.execute()
 
@@ -31,17 +31,3 @@ def test_execute(mocker, patched_destroy_prune, patched_logger_info,
 
     assert not config_instance.state.converged
     assert not config_instance.state.created
-
-
-def test_execute_skips_when_manual_driver(
-        patched_destroy_setup, molecule_driver_delegated_section_data,
-        patched_logger_warn, patched_ansible_destroy, config_instance):
-    config_instance.merge_dicts(config_instance.config,
-                                molecule_driver_delegated_section_data)
-    d = destroy.Destroy(config_instance)
-    d.execute()
-
-    msg = 'Skipping, instances are delegated.'
-    patched_logger_warn.assert_called_once_with(msg)
-
-    assert not patched_ansible_destroy.called

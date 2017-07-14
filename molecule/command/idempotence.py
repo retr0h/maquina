@@ -22,6 +22,7 @@ import re
 
 import click
 
+import molecule.command
 from molecule import logger
 from molecule import scenarios
 from molecule import util
@@ -52,10 +53,13 @@ class Idempotence(base.Base):
 
         :return: None
         """
+<<<<<<< HEAD
         if not self._config.state.converged:
             msg = 'Instances not converged.  Please converge instances first.'
             util.sysexit_with_message(msg)
 
+=======
+>>>>>>> Implement an internal test matrix
         output = self._config.provisioner.converge(out=None, err=None)
 
         idempotent = self._is_idempotent(output)
@@ -134,6 +138,10 @@ def idempotence(ctx, scenario_name):  # pragma: no cover
 
     s = scenarios.Scenarios(
         base.get_configs(args, command_args), scenario_name)
+    s.print_matrix()
     for scenario in s.all:
-        s.print_sequence_info(scenario, scenario.subcommand)
-        Idempotence(scenario.config).execute()
+        for sequence in s.sequences_for_scenario(scenario):
+            s.print_sequence_info(scenario, sequence)
+            command_module = getattr(molecule.command, sequence)
+            command = getattr(command_module, sequence.capitalize())
+            command(scenario.config).execute()

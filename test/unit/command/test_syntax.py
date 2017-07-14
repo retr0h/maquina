@@ -21,8 +21,7 @@
 from molecule.command import syntax
 
 
-def test_execute(mocker, patched_logger_info, patched_ansible_syntax,
-                 config_instance):
+def test_execute(patched_ansible_syntax, config_instance):
     s = syntax.Syntax(config_instance)
     s.execute()
 

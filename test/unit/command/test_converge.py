@@ -21,8 +21,7 @@
 from molecule.command import converge
 
 
-def test_execute(mocker, patched_logger_info, patched_ansible_converge,
-                 config_instance):
+def test_execute(patched_ansible_converge, config_instance):
     c = converge.Converge(config_instance)
     c.execute()
 

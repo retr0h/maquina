@@ -14,5 +14,6 @@ psutil==5.2.2
 PyYAML==3.12
 sh==1.12.14
 tabulate==0.7.7
+tree-format==0.1.1
 testinfra==1.6.3
 yamllint==1.8.1

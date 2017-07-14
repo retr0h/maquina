@@ -35,9 +35,8 @@ def molecule_provisioner_section_with_destruct_data():
     }
 
 
-def test_execute(mocker, molecule_provisioner_section_with_destruct_data,
-                 patched_ansible_destruct, patched_logger_info,
-                 config_instance):
+def test_execute(molecule_provisioner_section_with_destruct_data,
+                 patched_ansible_destruct, config_instance):
     config_instance.merge_dicts(
         config_instance.config,
         molecule_provisioner_section_with_destruct_data)
@@ -46,14 +45,3 @@ def test_execute(mocker, molecule_provisioner_section_with_destruct_data,
     d.execute()
 
     patched_ansible_destruct.assert_called_once_with()
-
-
-def test_execute_skips_when_playbook_not_configured(
-        patched_logger_warn, patched_ansible_destruct, config_instance):
-    d = destruct.Destruct(config_instance)
-    d.execute()
-
-    msg = 'Skipping, destruct playbook not configured.'
-    patched_logger_warn.assert_called_once_with(msg)
-
-    assert not patched_ansible_destruct.called

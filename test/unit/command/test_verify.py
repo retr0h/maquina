@@ -21,8 +21,7 @@
 from molecule.command import verify
 
 
-def test_execute(mocker, patched_logger_info, patched_testinfra,
-                 config_instance):
+def test_execute(patched_testinfra, config_instance):
     v = verify.Verify(config_instance)
     v.execute()
 

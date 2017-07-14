@@ -20,6 +20,7 @@
 
 import click
 
+import molecule.command
 from molecule import config
 from molecule import logger
 from molecule import scenarios
@@ -56,16 +57,6 @@ class Create(base.Base):
         """
         self._config.state.change_state('driver', self._config.driver.name)
 
-        if self._config.driver.delegated:
-            msg = 'Skipping, instances are delegated.'
-            LOG.warn(msg)
-            return
-
-        if self._config.state.created:
-            msg = 'Skipping, instances already created.'
-            LOG.warn(msg)
-            return
-
         self._config.provisioner.setup()
         self._config.state.change_state('created', True)
 
@@ -92,6 +83,10 @@ def create(ctx, scenario_name, driver_name):  # pragma: no cover
 
     s = scenarios.Scenarios(
         base.get_configs(args, command_args), scenario_name)
+    s.print_matrix()
     for scenario in s.all:
-        s.print_sequence_info(scenario, scenario.subcommand)
-        Create(scenario.config).execute()
+        for sequence in s.sequences_for_scenario(scenario):
+            s.print_sequence_info(scenario, sequence)
+            command_module = getattr(molecule.command, sequence)
+            command = getattr(command_module, sequence.capitalize())
+            command(scenario.config).execute()

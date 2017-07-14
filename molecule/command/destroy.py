@@ -20,6 +20,7 @@
 
 import click
 
+import molecule.command
 from molecule import config
 from molecule import logger
 from molecule import scenarios
@@ -60,11 +61,6 @@ class Destroy(base.Base):
         """
         self.prune()
 
-        if self._config.driver.delegated:
-            msg = 'Skipping, instances are delegated.'
-            LOG.warn(msg)
-            return
-
         self._config.provisioner.destroy()
         self._config.state.reset()
 
@@ -99,6 +95,10 @@ def destroy(ctx, scenario_name, driver_name, __all):  # pragma: no cover
 
     s = scenarios.Scenarios(
         base.get_configs(args, command_args), scenario_name)
+    s.print_matrix()
     for scenario in s.all:
-        s.print_sequence_info(scenario, scenario.subcommand)
-        Destroy(scenario.config).execute()
+        for sequence in s.sequences_for_scenario(scenario):
+            s.print_sequence_info(scenario, sequence)
+            command_module = getattr(molecule.command, sequence)
+            command = getattr(command_module, sequence.capitalize())
+            command(scenario.config).execute()

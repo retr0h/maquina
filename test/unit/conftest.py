@@ -175,10 +175,20 @@ def molecule_file_fixture(molecule_scenario_directory_fixture,
 
 
 @pytest.fixture
-def config_instance(molecule_file_fixture, molecule_data):
+def args():
+    return {'foo': 'bar'}
+
+
+@pytest.fixture
+def command_args():
+    return {'foo': 'bar'}
+
+
+@pytest.fixture
+def config_instance(molecule_file_fixture, molecule_data, args, command_args):
     pytest.helpers.write_molecule_file(molecule_file_fixture, molecule_data)
 
-    return config.Config(molecule_file_fixture)
+    return config.Config(molecule_file_fixture, args, command_args)
 
 
 # Mocks
@@ -212,6 +222,11 @@ def patched_logger_critical(mocker):
 @pytest.fixture
 def patched_logger_success(mocker):
     return mocker.patch('molecule.logger.CustomLogger.success')
+
+
+@pytest.fixture
+def patched_logger_out(mocker):
+    return mocker.patch('molecule.logger.CustomLogger.out')
 
 
 @pytest.fixture

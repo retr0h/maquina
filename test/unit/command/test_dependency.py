@@ -21,8 +21,7 @@
 from molecule.command import dependency
 
 
-def test_execute(mocker, patched_logger_info, patched_ansible_galaxy,
-                 config_instance):
+def test_execute(patched_ansible_galaxy, config_instance):
     d = dependency.Dependency(config_instance)
     d.execute()
 

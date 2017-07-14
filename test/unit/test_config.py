@@ -47,11 +47,11 @@ def test_molecule_file_private_member(molecule_file_fixture, config_instance):
 
 
 def test_args_member(config_instance):
-    assert {} == config_instance.args
+    assert {'foo': 'bar'} == config_instance.args
 
 
 def test_command_args_member(config_instance):
-    assert {} == config_instance.command_args
+    assert {'foo': 'bar'} == config_instance.command_args
 
 
 def test_debug_property(config_instance):

@@ -100,11 +100,6 @@ class Yamllint(base.Base):
             _err=LOG.error)
 
     def execute(self):
-        if not self.enabled:
-            msg = 'Skipping, lint is disabled.'
-            LOG.warn(msg)
-            return
-
         if self._yamllint_command is None:
             self.bake()
 

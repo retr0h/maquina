@@ -21,8 +21,7 @@
 from molecule.command import check
 
 
-def test_execute(mocker, patched_logger_info, patched_ansible_check,
-                 config_instance):
+def test_execute(patched_ansible_check, config_instance):
     c = check.Check(config_instance)
     c.execute()
 
