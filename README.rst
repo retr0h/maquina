@@ -37,6 +37,10 @@ supports.
 Documentation
 =============
 
+.. image:: https://asciinema.org/a/136191.png
+   :target: https://asciinema.org/a/136191
+   :alt: Quick Start
+
 https://molecule.readthedocs.io/
 
 Contact
