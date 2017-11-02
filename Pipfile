@@ -1,0 +1,43 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[dev-packages]
+
+apache-libcloud = "*"
+boto = "*"
+docker-py = "*"
+mock = "*"
+pytest = "==3.0.7"
+pytest-cov = "*"
+pytest-helpers-namespace = "*"
+pytest-mock = "*"
+pytest-verbose-parametrize = "*"
+python-vagrant = "*"
+shade = "==1.22.2"
+
+
+[packages]
+
+ansible-lint = "*"
+anyconfig = "*"
+click = "*"
+click-completion = "*"
+colorama = "*"
+cookiecutter = "*"
+"flake8" = "*"
+python-gilt = "*"
+"Jinja2" = "*"
+marshmallow = "*"
+pbr = "*"
+pexpect = "*"
+psutil = "*"
+PyYAML = "*"
+sh = "*"
+tabulate = "*"
+testinfra = "*"
+tree-format = "*"
+yamllint = "*"
