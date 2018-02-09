@@ -43,6 +43,7 @@ Installing
 .. image:: https://asciinema.org/a/161970.png
    :target: https://asciinema.org/a/161970?speed=5&autoplay=1&loop=1
    :alt: Installing
+   :width: 500
 
 Creating a new role
 -------------------
